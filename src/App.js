@@ -15,7 +15,7 @@ function App() {
 			<div className="mt-6">
 				<div className="copy-tables">
 					<Button variant="primary" size="sm" className="copy-tables__copy">Copy table</Button>
-					<Button size="sm" className="btn-borderless mx-3 px-1 copy-tables__remove">
+					<Button variant="borderless" size="sm" className="mx-3 px-1 copy-tables__remove">
 						<span className="sr-only">Remove</span>
 						<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
 							<path id="btn_delete.svg_btn_delete.png" data-name="btn_delete.svg, btn_delete.png"
