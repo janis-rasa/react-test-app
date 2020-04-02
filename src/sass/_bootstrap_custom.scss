@@ -69,3 +69,16 @@
 		}
 	}
 }
+// Tables
+.table {
+	thead {
+		background-color: $blue-darker;
+		color: $blue-lighter;
+	}
+	&-bordered {
+		th,
+		td {
+			border-color: $gray-560;
+		}
+	}
+}

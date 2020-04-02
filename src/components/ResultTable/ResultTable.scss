@@ -10,30 +10,60 @@
 		vertical-align: middle;
 	}
 	&__thead {
-		background-color: $blue-darker;
-		color: $blue-lighter;
 		@include media-breakpoint-only(xs) {
 			display: none;
 		}
 		th,
 		td {
 			color: inherit;
-			border-color: transparent;
+			border-color: $blue-darker;
 		}
 	}
-	&__td,
-	&__th {
+	.res-table__td,
+	.res-table__th {
 		@include media-breakpoint-only(xs) {
-			display: block;
+			display: flex;
+			align-items: center;
+			padding: 0;
+			border: 0;
 			&::before {
 				font-weight: 700;
 				display: inline-block;
 				content: attr(data-label);
-				padding-right: 5px;
+				min-width: 75px;
+				padding: .75rem;
+				background-color: $blue-darker;
+				color: $blue-lighter;
+				border-bottom: 1px solid $blue-darker;
 			}
 		}
 		&_head {
 			font-size: 1.17rem;
+		}
+		&_flex {
+			@include media-breakpoint-only(xs) {
+				display: flex;
+			}
+		}
+	}
+	.res-table__td {
+		@include media-breakpoint-only(xs) {
+			&:nth-child(1) {
+				&:before {
+					border-top: 1px solid $blue-darker;
+				}
+				.res-table__data {
+					border-top: 1px solid $gray-560;
+				}
+			}
+		}
+	}
+	&__data {
+		@include media-breakpoint-only(xs) {
+			padding: .75rem;
+			border-bottom: 1px solid $gray-560;
+			border-right: 1px solid $gray-560;
+			flex-grow: 1;
 		}
 	}
 	&__delete,
@@ -41,6 +71,10 @@
 		text-decoration: underline;
 		padding-top: 0;
 		padding-bottom: 0;
+		@include media-breakpoint-only(xs) {
+			margin-bottom: -1px;
+			margin-top: -1px;
+		}
 	}
 	&__delete {
 		color: $red-dark;

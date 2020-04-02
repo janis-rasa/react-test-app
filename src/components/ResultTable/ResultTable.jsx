@@ -17,6 +17,7 @@ function ResultTable() {
 			</thead>
 			<tbody className="res-table__tbody">
 				<ResultTableRow/>
+				<ResultTableRow/>
 			</tbody>
 		</Table>
 	)

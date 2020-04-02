@@ -4,15 +4,23 @@ import Button from 'react-bootstrap/Button'
 function ResultTableRow() {
 	return (
 		<tr className="res-table__tr">
-			<td className="res-table__td" data-label="Name: ">John</td>
-			<td className="res-table__td" data-label="Surname: ">Doe</td>
-			<td className="res-table__td" data-label="Age: ">36</td>
-			<td className="res-table__td" data-label="City: ">London</td>
-			<td className="res-table__td" data-label="Action: ">
-				<div className="d-flex justify-content-around">
+			<td className="res-table__td" data-label="Name: ">
+				<span className="res-table__data">John</span>
+			</td>
+			<td className="res-table__td" data-label="Surname: ">
+				<span className="res-table__data">Doe</span>
+			</td>
+			<td className="res-table__td" data-label="Age: ">
+				<span className="res-table__data">36</span>
+			</td>
+			<td className="res-table__td" data-label="City: ">
+				<span className="res-table__data">London</span>
+			</td>
+			<td className="res-table__td res-table__td_flex" data-label="&nbsp;">
+				<span className="d-flex justify-content-around flex-grow-1 res-table__data">
 					<Button variant="link" size="sm" className="res-table__edit">Edit</Button>
 					<Button variant="link" size="sm" className="res-table__delete">Delete</Button>
-				</div>
+				</span>
 			</td>
 		</tr>
 	)
