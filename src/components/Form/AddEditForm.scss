@@ -1,0 +1,14 @@
+@import "~bootstrap/scss/functions";
+@import "../../sass/bootstrap_variables";
+
+.add-form {
+	background-color: $white;
+	padding: 1.5rem;
+	position: relative;
+	z-index: 1;
+	box-shadow: 0 3px 5px rgba($black,.2);
+	border-radius: $border-radius-sm;
+	&__submit {
+		margin-top: 2.5rem;
+	}
+}

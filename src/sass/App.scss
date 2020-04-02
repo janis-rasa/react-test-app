@@ -1,0 +1,31 @@
+@import "~bootstrap/scss/functions";
+@import "bootstrap_variables";
+@import "~bootstrap/scss/bootstrap";
+@import "bootstrap_custom";
+
+html {
+	font-size: 75%;
+}
+
+body {
+	padding: 3.75rem 0;
+}
+
+.copy-tables {
+	margin-bottom: 1rem;
+	display: flex;
+	justify-content: flex-end;
+	&__remove {
+		&:hover {
+			.svg__cls-1 {
+				fill: $red-dark;
+			}
+		}
+	}
+}
+
+.svg__cls-1 {
+	fill: $red;
+	fill-rule: evenodd;
+	color: inherit;
+}

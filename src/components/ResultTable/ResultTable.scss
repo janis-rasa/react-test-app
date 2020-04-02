@@ -1,0 +1,51 @@
+@import "~bootstrap/scss/functions";
+@import "../../sass/bootstrap_variables";
+@import "~bootstrap/scss/mixins/breakpoints";
+
+.res-table {
+	border-radius: $border-radius-sm;
+	background-color: $white;
+	td,
+	th {
+		vertical-align: middle;
+	}
+	&__thead {
+		background-color: $blue-darker;
+		color: $blue-lighter;
+		@include media-breakpoint-only(xs) {
+			display: none;
+		}
+		th,
+		td {
+			color: inherit;
+			border-color: transparent;
+		}
+	}
+	&__td,
+	&__th {
+		@include media-breakpoint-only(xs) {
+			display: block;
+			&::before {
+				font-weight: 700;
+				display: inline-block;
+				content: attr(data-label);
+				padding-right: 5px;
+			}
+		}
+		&_head {
+			font-size: 1.17rem;
+		}
+	}
+	&__delete,
+	&__edit {
+		text-decoration: underline;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+	&__delete {
+		color: $red-dark;
+		&:hover {
+			color: $red;
+		}
+	}
+}

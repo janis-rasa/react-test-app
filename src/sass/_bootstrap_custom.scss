@@ -1,0 +1,69 @@
+// Forms
+.form {
+	&-group {
+		position: relative;
+	}
+	&-control {
+		background-color: transparent;
+		&[type="date"],
+		&[type="date"]:focus,
+		&.has-value,
+		&:focus {
+			background-color: transparent;
+			~ .form-label {
+				transform: translate(1.5rem,0);
+				opacity: 0;
+			}
+		}
+		~ .form-label {
+			position: absolute;
+			top: .55rem;
+			margin: 0;
+			left: 1rem;
+			opacity: 1;
+			transition: ease-in-out 0.4s;
+			transition-property: opacity, transform;
+			will-change: opacity, transform;
+			transform: translate(0,0);
+			transform-origin: 0 50%;
+			font-weight: normal;
+			z-index: -1;
+			white-space: nowrap;
+		}
+		&.form-control-lg {
+			~ .form-label {
+				top: 1rem
+			}
+		}
+		&.is-invalid {
+			~ .form-label {
+				color: $danger;
+			}
+		}
+	}
+}
+// Validation
+.valid-feedback,
+.invalid-feedback {
+	font-size: 1rem;
+}
+// Containers
+.container {
+	&_app {
+		@include media-breakpoint-up(md) {
+			max-width: 714px;
+		}
+	}
+}
+// Buttons
+.btn {
+	&-borderless {
+		background-color: transparent;
+		border-color: transparent;
+		&:hover {
+			background-color: transparent;
+			color: $primary;
+			border-color: transparent;
+		}
+	}
+}
