@@ -1,12 +1,20 @@
-import React from "react";
+import React, {useContext} from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import './AddEditForm.scss'
 import AddEditFormField from "./AddEditFormField";
+import Context from "../../context";
 
-function AddEditForm() {
+
+
+function AddEditForm(editRow) {
+
+	if (editRow.length) {
+		console.log(editRow)
+	}
+	const { addData } = useContext(Context)
 
 	const formFields = [
 		{name: 'Name', type: 'text'},
@@ -32,14 +40,17 @@ function AddEditForm() {
 				Age: yup.number().required(),
 				City: yup.string().required(),
 			})}
-			onSubmit={console.log}
+			onSubmit={(values, { resetForm }) => {
+				addData(values);
+				resetForm();
+			}}
 		>
 			{({
-				  handleSubmit,
-				  handleChange,
-				  values,
-				  touched,
-				  errors,
+				handleSubmit,
+				handleChange,
+				values,
+				touched,
+				errors,
 			  }) => (
 					<Form className="add-form form" method="post" noValidate onSubmit={handleSubmit}>
 						{formFields.map(formField => {

@@ -17,7 +17,7 @@ function AddEditFormField({formField, onChange, onErrors, isValid, value}) {
 			/>
 			<Form.Label size="lg" className="add-form__label">{formField.name}</Form.Label>
 			<Form.Control.Feedback type="invalid" className="add-form__invalid">
-				{onErrors}
+				<span className="add-form__message">{onErrors}</span>
 			</Form.Control.Feedback>
 			<Form.Control.Feedback className="add-form__valid">Looks good!</Form.Control.Feedback>
 		</Form.Group>

@@ -3,7 +3,7 @@ import Table from 'react-bootstrap/Table'
 import './ResultTable.scss'
 import ResultTableRow from "./ResultTableRow";
 
-function ResultTable() {
+function ResultTable(props) {
 	return (
 		<Table bordered hover className="res-table">
 			<thead className="res-table__thead">
@@ -16,8 +16,9 @@ function ResultTable() {
 			</tr>
 			</thead>
 			<tbody className="res-table__tbody">
-				<ResultTableRow/>
-				<ResultTableRow/>
+				{ props.tableData.map(tableRow => {
+					return <ResultTableRow key={tableRow.id} tableRow={tableRow}/>
+				})}
 			</tbody>
 		</Table>
 	)
