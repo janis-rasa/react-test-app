@@ -1,24 +1,22 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import Button from 'react-bootstrap/Button'
-import Context from "../../context";
 
 function ResultTableRow(props) {
 
-	const { removeTableRow, editTableRow } = useContext(Context)
-
+	const {tableRow, removeTableRow, editTableRow, index} = props
 	return (
-		<tr className="res-table__tr">
+		<tr className="res-table__tr" id={'row_'+ props.index + '_' + tableRow.id}>
 			<td className="res-table__td" data-label="Name: ">
-				<span className="res-table__data">{props.tableRow.Name}</span>
+				<span className="res-table__data">{tableRow.Name}</span>
 			</td>
 			<td className="res-table__td" data-label="Surname: ">
-				<span className="res-table__data">{props.tableRow.Surname}</span>
+				<span className="res-table__data">{tableRow.Surname}</span>
 			</td>
 			<td className="res-table__td" data-label="Age: ">
-				<span className="res-table__data">{props.tableRow.Age}</span>
+				<span className="res-table__data">{tableRow.Age}</span>
 			</td>
 			<td className="res-table__td" data-label="City: ">
-				<span className="res-table__data">{props.tableRow.City}</span>
+				<span className="res-table__data">{tableRow.City}</span>
 			</td>
 			<td className="res-table__td res-table__td_flex" data-label="&nbsp;">
 				<span className="d-flex justify-content-around flex-grow-1 res-table__data">
@@ -26,7 +24,7 @@ function ResultTableRow(props) {
 						variant="link"
 						size="sm"
 						className="res-table__edit"
-						onClick={editTableRow.bind(null, props.tableRow.id)}
+						onClick={editTableRow.bind(null, index, tableRow.id)}
 					>
 						Edit
 					</Button>
@@ -34,7 +32,7 @@ function ResultTableRow(props) {
 						variant="link"
 						size="sm"
 						className="res-table__delete"
-						onClick={removeTableRow.bind(null, props.tableRow.id)}
+						onClick={removeTableRow.bind(null, index, tableRow.id)}
 					>
 						Delete
 					</Button>
@@ -43,5 +41,4 @@ function ResultTableRow(props) {
 		</tr>
 	)
 }
-
 export default ResultTableRow

@@ -2,25 +2,47 @@
 @import "../../sass/bootstrap_variables";
 @import "~bootstrap/scss/mixins/breakpoints";
 
+.table-block {
+	overflow: hidden;
+	transition: 0.2s;
+	transition-property: opacity, height, margin;
+	will-change: opacity, height, margin;
+	&.closing {
+		height: 0 !important;
+		opacity: 0;
+		margin-top: 0 !important;
+	}
+	+ .table-block {
+		margin-top: 3rem;
+	}
+}
+
 .res-table {
 	border-radius: $border-radius-sm;
 	background-color: $white;
-	td,
-	th {
-		vertical-align: middle;
-	}
-	&__thead {
+	.res-table__thead {
 		@include media-breakpoint-only(xs) {
 			display: none;
 		}
-		th,
-		td {
+		.res-table__td,
+		.res-table__th {
+			padding: .75rem;
 			color: inherit;
 			border-color: $blue-darker;
 		}
 	}
+	&__tr {
+		&.closing {
+			.res-table__data {
+				height: 0;
+				padding: 0;
+				opacity: 0;
+			}
+		}
+	}
 	.res-table__td,
 	.res-table__th {
+		vertical-align: middle;
 		@include media-breakpoint-only(xs) {
 			display: flex;
 			align-items: center;
@@ -47,6 +69,7 @@
 		}
 	}
 	.res-table__td {
+		padding: 0;
 		@include media-breakpoint-only(xs) {
 			&:nth-child(1) {
 				&:before {
@@ -59,8 +82,15 @@
 		}
 	}
 	&__data {
+		display: block;
+		padding: .75rem;
+		position: relative;
+		overflow: hidden;
+		transition: 0.25s;
+		opacity: 1;
+		transition-property: height, padding, opacity;
+		will-change: height, padding;
 		@include media-breakpoint-only(xs) {
-			padding: .75rem;
 			border-bottom: 1px solid $gray-560;
 			border-right: 1px solid $gray-560;
 			flex-grow: 1;
@@ -83,3 +113,4 @@
 		}
 	}
 }
+

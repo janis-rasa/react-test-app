@@ -1,64 +1,144 @@
 import React from 'react'
 import AddEditForm from './components/Form/AddEditForm'
 import ResultTable from './components/ResultTable/ResultTable'
-import Button from 'react-bootstrap/Button'
-import Context from "./context";
+import update from 'immutability-helper';
 
+// Editable table index
+const indexTable = 0;
 
-function App() {
+export default class App extends React.Component {
 
-	const [tableData, setTableData] = React.useState([
-		{id: 1, Name: 'John', Surname: 'Doe', Age: 36, City: 'London'},
-		{id: 2, Name: 'Mark', Surname: 'Otto', Age: 38, City: 'Berlin'},
-		{id: 3, Name: 'Kirk', Surname: 'Douglas', Age: 88, City: 'L.A.'},
-	])
-
-	function removeTableRow(id) {
-		setTableData(tableData.filter(rowData => rowData.id !== id))
+	constructor(props) {
+		super(props)
+		this.state = {
+			tableData: [
+				[
+					{id: 1, Name: 'John', Surname: 'Doe', Age: 36, City: 'London'},
+					{id: 2, Name: 'Mark', Surname: 'Otto', Age: 38, City: 'Berlin'},
+					{id: 3, Name: 'Kirk', Surname: 'Douglas', Age: 88, City: 'L.A.'},
+				],
+				[
+					{id: 1, Name: 'John', Surname: 'Doe', Age: 36, City: 'London2'},
+					{id: 2, Name: 'Mark', Surname: 'Otto', Age: 38, City: 'Berlin2'},
+					{id: 3, Name: 'Kirk', Surname: 'Douglas', Age: 88, City: 'L.A.2'},
+				]
+			],
+			editRow: []
+		}
 	}
 
-	function addData(values) {
-		values['id'] = Date.now()
-		setTableData([...tableData, values])
+	// Smooth scroll table into view
+	scrollToTable = (tableIndex) => {
+		setTimeout(() => {
+			let tableId = 'table-block_' + tableIndex
+			document.getElementById(tableId).scrollIntoView({behavior: 'smooth', block: 'start'})
+		}, 200)
 	}
 
-	let editRow = '';
-	function editTableRow(id) {
-		editRow = tableData.find(row => row.id === id)
-		console.log(editRow)
+	addFromData = (values) => {
+		// Checking the id if it does not exist is a new record
+		if (!values['id']) {
+			values['id'] = Date.now()
+			this.setState({
+				tableData: update(this.state.tableData, {[indexTable]: {$push: [values]}}),
+				editRow: []
+			})
+		} else {
+			// We have id, let's update record
+			let editedTableIndex = this.state.editRow[0]
+			let index = this.state.tableData[editedTableIndex].findIndex(row => row.id === values['id'])
+			if (index !== -1) {
+				this.setState({
+					tableData: update(this.state.tableData, {[editedTableIndex]: {[index]: {$merge: values}}}),
+					editRow: []
+				})
+			} else {
+				// Someone deleted a record while we where editing data put it back to table
+				this.setState({
+					tableData: update(this.state.tableData, {[editedTableIndex]: {$push: [values]}}),
+					editRow: []
+				})
+			}
+			// Some animation
+			this.scrollToTable(editedTableIndex)
+		}
 	}
 
+	removeTableRow = (index, id) => {
+		// Adding class for animation
+		let rowId = 'row_' + index + '_' + id
+		document.getElementById(rowId).classList.add("closing");
 
-	return (
-		<Context.Provider value={{removeTableRow, addData, editTableRow}}>
+		// Back to work
+		setTimeout(() => {
+			let arrayIndex = this.state.tableData[index].findIndex(row => row.id === id)
+			if (arrayIndex !== -1) {
+				this.setState({
+					tableData: update(this.state.tableData, {[index]: {$splice: [[arrayIndex,1]]}}),
+				})
+			}
+		},250)
+
+	}
+
+	editTableRow = (index, id) => {
+		this.setState({
+			editRow: [
+				index, this.state.tableData[index].find(row => row.id === id)
+			]
+		})
+		// Some animation
+		document.body.scrollIntoView({behavior: 'smooth', block: 'start'})
+	}
+
+	copyTable = (index) => {
+		let next = index + 1
+		this.setState({
+			tableData: update(this.state.tableData, {$splice: [[next, 0, this.state.tableData[index]]]}),
+		})
+		// Some animation
+		this.scrollToTable(next)
+	}
+
+	deleteTable = (index) => {
+		// Adding class for animation
+		let tableId = 'table-block_' + index
+		let elementHeight = document.getElementById(tableId).offsetHeight + 1;
+		document.getElementById(tableId).style.height = elementHeight.toString() + 'px';
+		setTimeout(() => {
+			document.getElementById(tableId).classList.add("closing");
+		},50)
+		// Back to work
+		setTimeout(() => {
+			this.setState({
+				tableData: update(this.state.tableData, {$splice: [[index, 1]]}),
+			})
+		}, 300)
+	}
+
+	render() {
+		return (
 			<div className="container container_app">
 				<div className="row">
 					<div className="col-md-6">
-						<AddEditForm editRow={editRow} />
+						<AddEditForm addFromData={this.addFromData} editRow={this.state.editRow} />
 					</div>
 				</div>
-				{tableData.length ? (
 					<div className="mt-6">
-						<div className="copy-tables">
-							<Button variant="primary" size="sm" className="copy-tables__copy">Copy table</Button>
-							<Button variant="borderless" size="sm" className="mx-3 px-1 copy-tables__remove">
-								<span className="sr-only">Remove</span>
-								<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
-									<path id="btn_delete.svg_btn_delete.png" data-name="btn_delete.svg, btn_delete.png"
-									      className="svg__cls-1"
-									      d="M623.246,435.991l3.377-3.378a1.278,1.278,0,0,0,0-1.8l-0.45-.45a1.276,1.276,0,0,0-1.8,0l-3.378,3.378-3.377-3.378a1.278,1.278,0,0,0-1.8,0l-0.451.45a1.278,1.278,0,0,0,0,1.8l3.377,3.377-3.377,3.378a1.278,1.278,0,0,0,0,1.8l0.451,0.45a1.278,1.278,0,0,0,1.8,0l3.377-3.377,3.378,3.377a1.278,1.278,0,0,0,1.8,0l0.45-.45a1.278,1.278,0,0,0,0-1.8Z"
-									      transform="translate(-615 -430)"/>
-								</svg>
-							</Button>
-						</div>
-						<ResultTable tableData={tableData} />
+						{ this.state.tableData.map((table, index) => {
+							return <ResultTable
+								tableData={table}
+								removeTableRow={this.removeTableRow}
+								editTableRow={this.editTableRow}
+								key={index}
+								index={index}
+								copyTable={this.copyTable}
+								deleteTable={this.deleteTable}
+							/>
+						})}
 					</div>
-
-					) : (<p className="mt-5">Nothing to show</p>)}
-
 			</div>
-		</Context.Provider>
-	)
+		)
+	}
 }
 
-export default App

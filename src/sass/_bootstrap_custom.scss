@@ -57,6 +57,13 @@
 }
 // Buttons
 .btn {
+	&-sm {
+		font-weight: 300;
+	}
+	&-lg {
+		font-weight: 700;
+
+	}
 	&-borderless {
 		background-color: transparent;
 		border-color: transparent;
@@ -71,6 +78,7 @@
 }
 // Tables
 .table {
+	font-weight: 300;
 	thead {
 		background-color: $blue-darker;
 		color: $blue-lighter;
