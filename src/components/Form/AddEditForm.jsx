@@ -1,7 +1,7 @@
 import React from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import * as yup from 'yup';
 import './AddEditForm.scss'
 import AddEditFormField from "./AddEditFormField";
@@ -86,25 +86,25 @@ export default class AddEditForm extends React.Component {
 									value={values[formField.name] ?? ''}
 								/>
 							} else {
-									return <AddEditFormField
-										key={formField.name}
-										formField={formField}
-										onChange={e => {
-											handleChange(e);
-											handleLabelToggle(e)
-										}}
-										onErrors={errors[formField.name]}
-										isValid={touched[formField.name] && !errors[formField.name]}
-										value={values[formField.name] ?? ''}
-									/>
+								return <AddEditFormField
+									key={formField.name}
+									formField={formField}
+									onChange={e => {
+										handleChange(e);
+										handleLabelToggle(e)
+									}}
+									onErrors={errors[formField.name]}
+									isValid={touched[formField.name] && !errors[formField.name]}
+									value={values[formField.name] ?? ''}
+								/>
 							}
 						})}
 						<Button
 							type="submit"
-							variant={this.props.editRow.length ? "info" : "primary" }
+							variant={this.props.editRow.length ? "info" : "primary"}
 							className="add-form__submit text-uppercase btn-block btn-lg"
 						>
-							{this.props.editRow.length ? "Edit" : "Add" }
+							{this.props.editRow.length ? "Edit" : "Add"}
 						</Button>
 					</Form>
 				)}
