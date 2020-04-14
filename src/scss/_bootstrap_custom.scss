@@ -50,6 +50,8 @@
 // Containers
 .container {
 	&_app {
+		padding-top: 3.75rem;
+		padding-bottom: 3.75rem;
 		@include media-breakpoint-up(md) {
 			max-width: 714px;
 		}

@@ -1,5 +1,5 @@
 @import "~bootstrap/scss/functions";
-@import "../../sass/bootstrap_variables";
+@import "../../scss/bootstrap_variables";
 @import "~bootstrap/scss/mixins/breakpoints";
 
 .copy-tables {
@@ -10,7 +10,7 @@
 		&:focus,
 		&:hover {
 			.svg__cls-1 {
-				fill: $red-dark;
+				transform: scale(1.3,1.3);
 			}
 		}
 		&:active,
@@ -22,6 +22,10 @@
 		fill: $red;
 		fill-rule: evenodd;
 		color: inherit;
+		transition: 0.25s;
+		transform: scale(1,1);
+		transition-property: transform;
+		will-change: transform;
 	}
 }
 
@@ -31,6 +35,7 @@
 	transition-property: height, opacity, margin;
 	will-change:  height, opacity, margin;
 	padding-top: 3px;
+	padding-right: 3px;
 	transform-origin: top;
 	&.closing {
 		margin-top: 0 !important;

@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './sass/App.scss';
+import './scss/index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 
 ReactDOM.render(
   <React.StrictMode>
     <App />
+    <ScrollToTop />
   </React.StrictMode>,
   document.getElementById('root')
 );
