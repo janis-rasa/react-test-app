@@ -112,7 +112,7 @@ export default class App extends React.Component {
 
 	copyTable = (tableId) => {
 		const newTableId = Date.now()
-		const tableIndex = this.state.tableData.findIndex(table => table.id === tableId)
+		const tableIndex = this.getTableIndex(tableId)
 		const table = Object.create(this.state.tableData[tableIndex])
 		table.id = newTableId
 		this.setStateData({$splice: [[[tableIndex + 1], 0, table]]}, this.tableRef[tableIndex])

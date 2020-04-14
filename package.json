@@ -1,6 +1,6 @@
 {
   "name": "test-app",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "private": true,
   "dependencies": {
     "@n8tb1t/use-scroll-position": "^1.0.43",
