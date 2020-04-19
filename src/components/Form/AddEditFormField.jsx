@@ -12,17 +12,16 @@ function AddEditFormField({formField, onChange, onErrors, isValid, value}) {
 					onChange={onChange}
 					isInvalid={!!onErrors}
 					isValid={isValid}
-					className={value ? ('has-value add-form__input') : 'add-form__input'}
+					className={value ? ('has-value add-form__input') : (value === 0 ? 'has-value add-form__input' : 'add-form__input')}
 					value={value}
 				/>
-				<Form.Label size="lg" className="add-form__label">{formField.name}</Form.Label>
+				<Form.Label size="lg" className="add-form__label">{formField.label}</Form.Label>
 				<Form.Control.Feedback type="invalid" className="add-form__invalid">
 					<span className="add-form__message">{onErrors}</span>
 				</Form.Control.Feedback>
 				<Form.Control.Feedback className="add-form__valid">Looks good!</Form.Control.Feedback>
 			</Form.Group>
 	)
-
 }
 
 export default AddEditFormField

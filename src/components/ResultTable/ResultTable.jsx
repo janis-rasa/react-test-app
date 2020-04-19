@@ -1,34 +1,50 @@
 import React from 'react'
 import Table from 'react-bootstrap/Table'
 import './ResultTable.scss'
-import ResultTableRow from "./ResultTableRow/ResultTableRow";
-import Button from "react-bootstrap/Button";
-import {ReactComponent as RemoveButton} from "../../svg/btn_delete.svg";
+import ResultTableRow from "./ResultTableRow/ResultTableRow"
+import Button from "react-bootstrap/Button"
+import {ReactComponent as RemoveButton} from "../../svg/btn_delete.svg"
 
-const ResultTable = React.forwardRef((props, ref) => {
+const ResultTable = (props) => {
 
-	const headCellsNames = [
-		'Name',
-		'Surname',
-		'Age',
-		'City'
-	]
+	const tableRef = React.useRef(null)
 
-	const TableHeadCells = headCellsNames.map(
+	const TableHeadCells = props.headCellsNames.map(
 		(cell, index) => <td className="res-table__td res-table__td_head" key={index}>{cell}</td>
 	)
 
+	const handleCopyTable = () => {
+		props.copyTable(props.tableId, tableRef)
+	}
+
+	const handleDeleteTable = () => {
+		const element = tableRef.current;
+		const elementHeight = element.offsetHeight
+		element.style.height = elementHeight + 'px'
+		setTimeout(() => {
+			element.classList.add("closing")
+		}, 5)
+		setTimeout(() => {
+			props.deleteTable(props.tableId)
+		}, 250)
+	}
+
+	const saveFirstTableRef = () => {
+		if (props.tableId === props.firstTableId) {
+			props.saveFirstTableRef(tableRef)
+		}
+	}
+
+	React.useEffect(saveFirstTableRef)
+
 	return (
-		<div className="table-block"
-		     ref={ref}
-		     id={props.tableId}
-		>
+		<div className="table-block" id={props.tableId} ref={tableRef}>
 			<div className="copy-tables">
 				<Button
 					variant="primary"
 					size="sm"
 					className="copy-tables__copy"
-					onClick={props.copyTable.bind(null, props.tableId)}
+					onClick={handleCopyTable}
 				>
 					Copy table
 				</Button>
@@ -37,9 +53,9 @@ const ResultTable = React.forwardRef((props, ref) => {
 						variant="borderless"
 						size="sm"
 						className="mx-3 px-1 copy-tables__remove"
-						onClick={props.deleteTable.bind(null, props.tableId)}
+						onClick={handleDeleteTable}
 					>
-						<span className="sr-only">Remove</span>
+						<span className="sr-only">Remove table</span>
 						<RemoveButton/>
 					</Button>
 				) : ''}
@@ -52,14 +68,16 @@ const ResultTable = React.forwardRef((props, ref) => {
 				</tr>
 				</thead>
 				<tbody className="res-table__tbody">
-				{props.tableData.map((tableRow) => {
+				{props.tableData.map((row) => {
 					return (
 						<ResultTableRow
-							key={tableRow.id}
+							key={row.id}
 							tableId={props.tableId}
-							tableRow={tableRow}
+							rowData={row}
+							tableRow={props.tableRow}
 							deleteTableRow={props.deleteTableRow}
 							editTableRow={props.editTableRow}
+							tableRef={tableRef}
 						/>
 					)
 				})}
@@ -67,6 +85,6 @@ const ResultTable = React.forwardRef((props, ref) => {
 			</Table>
 		</div>
 	)
-})
+}
 
 export default ResultTable

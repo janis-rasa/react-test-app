@@ -31,12 +31,12 @@
 
 .table-block {
 	overflow: hidden;
-	transition: 0.2s;
+	transition: 0.3s;
 	transition-property: height, opacity, margin;
 	will-change:  height, opacity, margin;
 	padding-top: 3px;
 	padding-right: 3px;
-	transform-origin: top;
+	margin-right: -3px;
 	&.closing {
 		margin-top: 0 !important;
 		opacity: 0;
@@ -68,6 +68,21 @@
 				padding: 0;
 				opacity: 0;
 			}
+		}
+	}
+	&__data {
+		display: block;
+		padding: .75rem;
+		position: relative;
+		overflow: hidden;
+		transition: 0.3s;
+		opacity: 1;
+		transition-property: height, padding, opacity;
+		will-change: height, padding, opacity;
+		@include media-breakpoint-only(xs) {
+			border-bottom: 1px solid $gray-560;
+			border-right: 1px solid $gray-560;
+			flex-grow: 1;
 		}
 	}
 	.res-table__td,
@@ -109,21 +124,6 @@
 					border-top: 1px solid $gray-560;
 				}
 			}
-		}
-	}
-	&__data {
-		display: block;
-		padding: .75rem;
-		position: relative;
-		overflow: hidden;
-		transition: 0.25s;
-		opacity: 1;
-		transition-property: height, padding, opacity;
-		will-change: height, padding;
-		@include media-breakpoint-only(xs) {
-			border-bottom: 1px solid $gray-560;
-			border-right: 1px solid $gray-560;
-			flex-grow: 1;
 		}
 	}
 	&__delete,

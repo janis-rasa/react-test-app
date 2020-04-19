@@ -8,7 +8,44 @@
 	z-index: 1;
 	box-shadow: 0 3px 5px rgba($black,.2);
 	border-radius: $border-radius-sm;
+	&__group {
+		//position: relative;
+	}
 	&__submit {
 		margin-top: 2.5rem;
+	}
+	&__valid,
+	&__invalid {
+		display: block;
+		position: absolute;
+		z-index: 1;
+		background-color: $white;
+		top: 100%;
+		left: 100%;
+		width: auto;
+		margin: 0;
+		padding: 0 4px;
+		border-radius: 3px;
+		transform: translate(0,-50%);
+		transition: 0.3s;
+		transition-property: left, opacity;
+		will-change: left, opacity;
+		opacity: 0;
+	}
+	&__message {
+		white-space: nowrap;
+	}
+	&__input {
+		&.was-validated :invalid ~ .invalid-feedback,
+		&.was-validated :invalid ~ .invalid-tooltip,
+		&.is-invalid ~ .invalid-feedback,
+		&.is-invalid ~ .invalid-tooltip,
+		&.was-validated :valid ~ .valid-feedback,
+		&.was-validated :valid ~ .valid-tooltip,
+		&.is-valid ~ .valid-feedback,
+		&.is-valid ~ .valid-tooltip {
+			left: 5px;
+			opacity: 1;
+		}
 	}
 }

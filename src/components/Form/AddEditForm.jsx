@@ -1,48 +1,68 @@
-import React from "react";
+import React from "react"
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import {Formik} from 'formik';
-import * as yup from 'yup';
+import {Formik} from 'formik'
+import * as yup from 'yup'
 import './AddEditForm.scss'
-import AddEditFormField from "./AddEditFormField";
+import AddEditFormField from "./AddEditFormField"
 
 const AddEditForm = (props) => {
 
 	// Define form fields
 	const formFields = [
-		{name: 'Name', type: 'text'},
-		{name: 'Surname', type: 'text'},
-		{name: 'Age', type: 'number'},
-		{name: 'City', type: 'text'}
+		{label: 'Name', name: 'name', type: 'text'},
+		{label: 'Surname', name: 'surname', type: 'text'},
+		{label: 'Age', name: 'age', type: 'number'},
+		{label: 'City', name: 'city', type: 'text'}
 	]
 
-	function handleLabelToggle(e) {
-		if (e.target.value.trim()) {
-			e.target.classList.add("has-value")
+	const handleOnChange = (values) => {
+		props.updateFormData(values)
+	}
+	const handleFormSubmit = ({resetForm}) => {
+		if (props.tableRow.tableId) {
+			props.editFormData(props.tableRow)
+			resetForm()
 		} else {
-			e.target.classList.remove("has-value")
+			props.addFormData(props.tableRow.row)
+			resetForm()
 		}
 	}
+
+	const initialValues = () => {
+		return Object.keys(props.tableRow).length ? props.tableRow.row : {}
+	}
+
+	const alphaCheck = /^[^ ]+/;
 
 	return (
 		/* Use Formik and yup for form data validation */
 		<Formik
 			enableReinitialize
-			initialValues={Object.keys(props.editRow).length ? props.editRow.row : {}}
-			validationSchema={yup.object({
-				Name: yup.string().required(),
-				Surname: yup.string().required(),
-				Age: yup.number().required(),
-				City: yup.string().required(),
-			})}
-			onSubmit={(values, {resetForm}) => {
-				props.addFormData(values)
-				resetForm()
-			}}
+			initialValues={initialValues()}
+			validationSchema={
+				yup.object({
+					name: yup.string().matches(alphaCheck, {
+						message: 'Enter a valid Name',
+						excludeEmptyString: true
+					}).required('Name is required'),
+					surname: yup.string().matches(alphaCheck, {
+						message: 'Enter a valid Name',
+						excludeEmptyString: true
+					}).required('Surname is required'),
+					age: yup.number().required('Age is required').moreThan(0, 'Age must be greater than 0'),
+					city: yup.string().matches(alphaCheck, {
+						message: 'Enter a valid City',
+						excludeEmptyString: true
+					}).required('City is required'),
+				})
+			}
+			onSubmit={handleFormSubmit}
+			validate={handleOnChange}
 		>
 			{({
-				  handleSubmit,
 				  handleChange,
+				  handleSubmit,
 				  values,
 				  touched,
 				  errors,
@@ -58,10 +78,7 @@ const AddEditForm = (props) => {
 						return <AddEditFormField
 							key={formField.name}
 							formField={formField}
-							onChange={e => {
-								handleChange(e);
-								handleLabelToggle(e)
-							}}
+							onChange={handleChange}
 							onErrors={errors[formField.name]}
 							isValid={touched[formField.name] && !errors[formField.name]}
 							value={values[formField.name] ?? ''}
@@ -69,10 +86,10 @@ const AddEditForm = (props) => {
 					})}
 					<Button
 						type="submit"
-						variant={Object.keys(props.editRow).length ? "info" : "primary"}
+						variant={(Object.keys(props.tableRow).length && props.tableRow.tableId) ? "info" : "primary"}
 						className="add-form__submit text-uppercase btn-block btn-lg"
 					>
-						{Object.keys(props.editRow).length ? "Edit" : "Add"}
+						{(Object.keys(props.tableRow).length && props.tableRow.tableId) ? "Edit" : "Add"}
 					</Button>
 				</Form>
 			)}

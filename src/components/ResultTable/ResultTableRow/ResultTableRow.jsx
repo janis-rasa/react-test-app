@@ -6,33 +6,30 @@ const ResultTableRow = (props) => {
 
 	const rowRef = React.useRef()
 
+	const handleDeleteRow = () => {
+		// Adding class for animation
+		rowRef.current.classList.add("closing")
+		setTimeout(() => {
+			props.deleteTableRow(props.tableId, props.rowData.id)
+		}, 250)
+	}
+
+	const handleEditRow = () => {
+		props.editTableRow(props.tableId, props.rowData.id, props.tableRef)
+	}
+
 	const buttonsData = [
 		{
 			action: 'edit',
 			text: 'Edit',
-			onClick: () => {return props.editTableRow.bind(null, props.tableId, props.tableRow.id, rowRef)}
+			onClick: () => {handleEditRow()}
 		},
 		{
 			action: 'delete',
 			text: 'Delete',
-			onClick: () => {return props.deleteTableRow.bind(null, props.tableId, props.tableRow.id, rowRef)}
+			onClick: () => {handleDeleteRow()}
 		},
 	]
-
-	const TableBodyCells = (tableRow) => {
-		const cell = []
-		for (let [key, value] of Object.entries(tableRow)) {
-			if (key === 'id') {
-				continue
-			}
-			cell.push(
-				<td className="res-table__td" data-label={key + ":"} key={key}>
-					<span className="res-table__data">{value}</span>
-				</td>
-			)
-		}
-		return cell
-	}
 
 	const ActionButtons = buttonsData.map( (button, index) =>
 		<Button
@@ -40,7 +37,7 @@ const ResultTableRow = (props) => {
 			size="sm"
 			className={"res-table__" + button.action}
 			key={index}
-			onClick={button.onClick()}
+			onClick={button.onClick}
 		>
 			{button.text}
 		</Button>
@@ -48,11 +45,21 @@ const ResultTableRow = (props) => {
 	return (
 		<tr
 			className="res-table__tr"
-			id={'row_' + props.tableId + '_' + props.tableRow.id}
+			id={'row_' + props.tableId + '_' + props.rowData.id}
 			ref={rowRef}
 		>
-			{/* Get cells with values */}
-			{TableBodyCells(props.tableRow)}
+			<td className="res-table__td" data-label="Name :">
+				<span className="res-table__data">{props.rowData.name}</span>
+			</td>
+			<td className="res-table__td" data-label="Surname :">
+				<span className="res-table__data">{props.rowData.surname}</span>
+			</td>
+			<td className="res-table__td" data-label="Age :">
+				<span className="res-table__data">{props.rowData.age}</span>
+			</td>
+			<td className="res-table__td" data-label="City :">
+				<span className="res-table__data">{props.rowData.city}</span>
+			</td>
 			<td className="res-table__td res-table__td_flex" data-label="&nbsp;">
 				<span className="d-flex justify-content-around flex-grow-1 res-table__data">
 					{ActionButtons}

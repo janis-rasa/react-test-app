@@ -4,13 +4,17 @@ import './scss/index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
+import store from "./redux/redux-store";
+import {Provider} from "react-redux";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-    <ScrollToTop />
-  </React.StrictMode>,
-  document.getElementById('root')
+	<React.StrictMode>
+		<Provider store={store}>
+			<App/>
+		</Provider>
+		<ScrollToTop/>
+	</React.StrictMode>,
+	document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change
