@@ -8,14 +8,6 @@ import AddEditFormField from "./AddEditFormField"
 
 const AddEditForm = (props) => {
 
-	// Define form fields
-	const formFields = [
-		{label: 'Name', name: 'name', type: 'text'},
-		{label: 'Surname', name: 'surname', type: 'text'},
-		{label: 'Age', name: 'age', type: 'number'},
-		{label: 'City', name: 'city', type: 'text'}
-	]
-
 	const handleOnChange = (values) => {
 		props.updateFormData(values)
 	}
@@ -33,7 +25,9 @@ const AddEditForm = (props) => {
 		return Object.keys(props.tableRow).length ? props.tableRow.row : {}
 	}
 
-	const alphaCheck = /^[^ ]+/;
+	const handleYup = Object.fromEntries(
+		props.formFields.map(item => [item.name, item.yupObject])
+	)
 
 	return (
 		/* Use Formik and yup for form data validation */
@@ -41,21 +35,7 @@ const AddEditForm = (props) => {
 			enableReinitialize
 			initialValues={initialValues()}
 			validationSchema={
-				yup.object({
-					name: yup.string().matches(alphaCheck, {
-						message: 'Enter a valid Name',
-						excludeEmptyString: true
-					}).required('Name is required'),
-					surname: yup.string().matches(alphaCheck, {
-						message: 'Enter a valid Name',
-						excludeEmptyString: true
-					}).required('Surname is required'),
-					age: yup.number().required('Age is required').moreThan(0, 'Age must be greater than 0'),
-					city: yup.string().matches(alphaCheck, {
-						message: 'Enter a valid City',
-						excludeEmptyString: true
-					}).required('City is required'),
-				})
+				yup.object(handleYup)
 			}
 			onSubmit={handleFormSubmit}
 			validate={handleOnChange}
@@ -74,7 +54,7 @@ const AddEditForm = (props) => {
 					onSubmit={handleSubmit}
 				>
 					{/* Render form fields*/}
-					{formFields.map(formField => {
+					{props.formFields.map(formField => {
 						return <AddEditFormField
 							key={formField.name}
 							formField={formField}

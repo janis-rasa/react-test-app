@@ -9,6 +9,7 @@ import AddEditForm from "./AddEditForm";
 const mapStateToProps = (state) => {
 	return {
 		tableRow: state.tablesData.tableRow,
+		formFields: state.tablesData.formFields,
 	}
 }
 

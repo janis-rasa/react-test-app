@@ -1,4 +1,5 @@
 import update from 'immutability-helper'
+import * as yup from "yup";
 
 
 const COPY_TABLE = 'COPY-TABLE'
@@ -34,34 +35,45 @@ const initialState = {
 	firstTableId: 1,
 	tableBlockRef: null,
 	nextTable: false,
-	firstTableRef: null
+	firstTableRef: null,
+	formFields: [
+		{label: 'Name', name: 'name', type: 'text', yupObject: (yup.string().matches(/^[^ ]+/, {
+				message: 'Enter a valid Name',
+				excludeEmptyString: true
+			}).required('Name is required'))},
+		{label: 'Surname', name: 'surname', type: 'text', yupObject: (yup.string().matches(/^[^ ]+/, {
+				message: 'Enter a valid Name',
+				excludeEmptyString: true
+			}).required('Surname is required'))},
+		{label: 'Age', name: 'age', type: 'number', yupObject: (yup.number().required('Age is required').moreThan(0, 'Age must be greater than 0'))},
+		{label: 'City', name: 'city', type: 'text', yupObject: (yup.string().matches(/^[^ ]+/, {
+				message: 'Enter a valid City',
+				excludeEmptyString: true
+			}).required('City is required'))}
+	],
 }
 
 const tablesData = (state = initialState, action) => {
 
 	const setTableData = (spec, tableRef = null, next = false) => {
-		try {
-			if (tableRef && next) {
-				state = {
-					...state,
-					tableBlockRef: tableRef,
-					nextTable: true
-				}
-			} else if (tableRef && !next) {
-				state = {
-					...state,
-					tableBlockRef: tableRef,
-					nextTable: false
-				}
+		if (tableRef && next) {
+			state = {
+				...state,
+				tableBlockRef: tableRef,
+				nextTable: true
 			}
-			return {
-					...state,
-					tableData: update(state.tableData, spec),
-					tableRow: {}
-				}
-		} catch (e) {
-			console.log(e)
+		} else if (tableRef && !next) {
+			state = {
+				...state,
+				tableBlockRef: tableRef,
+				nextTable: false
+			}
 		}
+		return {
+				...state,
+				tableData: update(state.tableData, spec),
+				tableRow: {}
+			}
 	}
 
 	const getTableIndex = (tableId) => {
