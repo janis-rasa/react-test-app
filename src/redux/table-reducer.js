@@ -1,4 +1,3 @@
-import update from 'immutability-helper'
 import * as yup from "yup";
 
 
@@ -37,71 +36,81 @@ const initialState = {
 	nextTable: false,
 	firstTableRef: null,
 	formFields: [
-		{label: 'Name', name: 'name', type: 'text', yupObject: (yup.string().matches(/^[^ ]+/, {
+		{
+			label: 'Name',
+			name: 'name',
+			type: 'text',
+			yupObject: (yup.string().matches(/^[^ ]+/, {
 				message: 'Enter a valid Name',
 				excludeEmptyString: true
-			}).required('Name is required'))},
-		{label: 'Surname', name: 'surname', type: 'text', yupObject: (yup.string().matches(/^[^ ]+/, {
+			}).required('Name is required'))
+		},
+		{
+			label: 'Surname',
+			name: 'surname',
+			type: 'text',
+			yupObject: (yup.string().matches(/^[^ ]+/, {
 				message: 'Enter a valid Name',
 				excludeEmptyString: true
-			}).required('Surname is required'))},
-		{label: 'Age', name: 'age', type: 'number', yupObject: (yup.number().required('Age is required').moreThan(0, 'Age must be greater than 0'))},
-		{label: 'City', name: 'city', type: 'text', yupObject: (yup.string().matches(/^[^ ]+/, {
+			}).required('Surname is required'))
+		},
+		{
+			label: 'Age',
+			name: 'age',
+			type: 'number',
+			yupObject: (yup.number().required('Age is required').moreThan(0, 'Age must be greater than 0'))
+		},
+		{
+			label: 'City',
+			name: 'city',
+			type: 'text',
+			yupObject: (yup.string().matches(/^[^ ]+/, {
 				message: 'Enter a valid City',
 				excludeEmptyString: true
-			}).required('City is required'))}
+			}).required('City is required'))
+		}
 	],
 }
 
 const tablesData = (state = initialState, action) => {
 
-	const setTableData = (spec, tableRef = null, next = false) => {
-		if (tableRef && next) {
-			state = {
-				...state,
-				tableBlockRef: tableRef,
-				nextTable: true
-			}
-		} else if (tableRef && !next) {
-			state = {
-				...state,
-				tableBlockRef: tableRef,
-				nextTable: false
-			}
-		}
-		return {
-				...state,
-				tableData: update(state.tableData, spec),
-				tableRow: {}
-			}
-	}
-
 	const getTableIndex = (tableId) => {
 		return state.tableData.findIndex(table => table.id === tableId)
 	}
-
-	const getRowIndex = (tableId, rowId) => {
-		return state.tableData[tableId].rows.findIndex(row => row.id === rowId)
-	}
-
-	let tableIndex = ''
-	let rowIndex = ''
 
 	switch (action.type) {
 
 		case ADD_FORM_DATA:
 			action.values['id'] = Date.now()
-			tableIndex = getTableIndex(state.firstTableId)
-			return setTableData({[tableIndex]: {rows: {$push: [action.values]}}}, state.firstTableRef)
+			return {
+				...state,
+				tableData: [
+					...state.tableData.map(table =>
+						table.id === state.firstTableId ? {
+								...table,
+								rows: [
+									...table.rows,
+									action.values
+								]
+							}
+							: table
+					),
+				],
+				tableBlockRef: state.firstTableRef,
+				nextTable: false,
+				tableRow: {}
+			}
 
 		case EDIT_TABLE_ROW:
-			tableIndex = getTableIndex(action.tableId)
-			rowIndex = getRowIndex(tableIndex, action.rowId)
-			const tableRow = state.tableData[tableIndex].rows[rowIndex]
+			let tableRowData = state.tableData.find(table =>
+				table.id === action.tableId
+			).rows.find(row =>
+				row.id === action.rowId
+			)
 			return {
 				...state,
 				tableRow: {
-					row: tableRow,
+					row: tableRowData,
 					rowId: action.rowId,
 					tableId: action.tableId,
 					tableRef: action.tableRef
@@ -110,25 +119,61 @@ const tablesData = (state = initialState, action) => {
 			}
 
 		case EDIT_FORM_DATA:
-			tableIndex = getTableIndex(action.tableRow.tableId)
-			rowIndex = getRowIndex(tableIndex, action.tableRow.row['id'])
-			return setTableData({[tableIndex]: {rows: {[rowIndex]: {$set: action.tableRow.row}}}}, action.tableRow.tableRef)
+			return {
+				...state,
+				tableRow: {},
+				tableBlockRef: action.tableRow.tableRef,
+				nextTable: false,
+				tableData: [
+					...state.tableData.map(table =>
+						table.id === action.tableRow.tableId ? {
+							...table,
+							rows: table.rows.map(row =>
+								row.id === action.tableRow.row['id'] ? action.tableRow.row : row
+							)
+						} : table
+					)
+				]
+			}
 
 		case COPY_TABLE:
-			const next = true
-			tableIndex = getTableIndex(action.tableId)
+			let tableIndex = getTableIndex(action.tableId)
 			let table = {...state.tableData[tableIndex]}
 			table.id = Date.now()
-			return setTableData({$splice: [[[tableIndex + 1], 0, table]]}, action.tableRef, next)
+			return {
+				...state,
+				tableData: [
+					...state.tableData.slice(0, tableIndex + 1),
+					table,
+					...state.tableData.slice(tableIndex + 1)
+				],
+				tableBlockRef: action.tableRef,
+				nextTable: true
+			}
 
 		case DELETE_TABLE:
-			tableIndex = getTableIndex(action.tableId)
-			return setTableData({$splice: [[tableIndex, 1]]})
+			return {
+				...state,
+				tableData: state.tableData.filter(item =>
+					item.id !== action.tableId
+				)
+			}
 
 		case DELETE_TABLE_ROW:
-			tableIndex = getTableIndex(action.tableId)
-			rowIndex = getRowIndex(tableIndex, action.rowId)
-			return setTableData({[tableIndex]: {rows: {$splice: [[rowIndex, 1]]}}})
+			return {
+				...state,
+				tableRow: {},
+				tableData: [
+					...state.tableData.map(table =>
+						table.id === action.tableId ? {
+							...table,
+							rows: table.rows.filter(row =>
+								row.id !== action.rowId
+							)
+						} : table
+					)
+				],
+			}
 
 		case SCROLL_SUCCESS:
 			if (action.scrollResult) {
@@ -155,6 +200,7 @@ const tablesData = (state = initialState, action) => {
 					row: action.values
 				}
 			}
+
 		default:
 			return state
 	}

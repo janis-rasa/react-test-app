@@ -11,13 +11,11 @@ const AddEditForm = (props) => {
 	const handleOnChange = (values) => {
 		props.updateFormData(values)
 	}
-	const handleFormSubmit = ({resetForm}) => {
+	const handleFormSubmit = () => {
 		if (props.tableRow.tableId) {
 			props.editFormData(props.tableRow)
-			resetForm()
 		} else {
 			props.addFormData(props.tableRow.row)
-			resetForm()
 		}
 	}
 
