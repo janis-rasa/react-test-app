@@ -1,7 +1,5 @@
 import React from 'react';
 import './ScrollToTop.scss'
-import {useScrollPosition} from '@n8tb1t/use-scroll-position'
-
 
 const ScrollToTop = () => {
 
@@ -11,20 +9,24 @@ const ScrollToTop = () => {
 		window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 	}
 
-	useScrollPosition(
-		({currPos }) => {
-			if (currPos.y > 10 && currPos.y < 150) {
-				setHideOnScroll('')
-			} else if (currPos.y > 150) {
-				setHideOnScroll('show')
-			} else {
-				setHideOnScroll('d-none')
-			}
-		},
-		[],
-		undefined,
-		true
-	)
+	const useScrollPosition = () => {
+		let position = window.pageYOffset
+		if (position > 10 && position < 150) {
+			setHideOnScroll('')
+		} else if (position > 150) {
+			setHideOnScroll('show')
+		} else {
+			setHideOnScroll('d-none')
+		}
+	}
+
+	React.useEffect(() => {
+		window.addEventListener('scroll', useScrollPosition, { passive: true })
+
+		return () => {
+			window.removeEventListener('scroll', useScrollPosition)
+		}
+	}, [])
 
 	return (
 		<React.Fragment>
