@@ -1,14 +1,26 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button'
+import {TableRowDataType, TableRowType} from "../../../types/types";
 
+type PropsType = {
+	tableId: number
+	rowData: TableRowType
+	tableRowData: TableRowDataType
+	tableRef: React.RefObject<HTMLTableElement>
 
-const ResultTableRow = (props) => {
+	editTableRow: (tableId: number, rowId: number, tableRef: React.RefObject<HTMLTableElement>) => void
+	deleteTableRow: (tableId: number, rowId: number) => void
+}
 
-	const rowRef = React.useRef()
+const ResultTableRow: React.FC<PropsType> = (props) => {
+
+	const rowRef: React.RefObject<HTMLTableRowElement> = React.useRef(null)
 
 	const handleDeleteRow = () => {
 		// Adding class for animation
-		rowRef.current.classList.add("closing")
+		if (rowRef.current) {
+			rowRef.current.classList.add("closing")
+		}
 		setTimeout(() => {
 			props.deleteTableRow(props.tableId, props.rowData.id)
 		}, 250)
@@ -45,7 +57,6 @@ const ResultTableRow = (props) => {
 	return (
 		<tr
 			className="res-table__tr"
-			id={'row_' + props.tableId + '_' + props.rowData.id}
 			ref={rowRef}
 		>
 			<td className="res-table__td" data-label="Name :">

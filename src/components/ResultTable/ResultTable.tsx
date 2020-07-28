@@ -4,12 +4,23 @@ import './ResultTable.scss'
 import ResultTableRow from "./ResultTableRow/ResultTableRow"
 import Button from "react-bootstrap/Button"
 import {ReactComponent as RemoveButton} from "../../svg/btn_delete.svg"
+import {
+	TableMapDispatchPropsType, TableMapStatePropsType,
+	TableRowType,
+} from "../../types/types";
 
-const ResultTable = (props) => {
+type ResultTablePropsType = {
+	tableId: number
+	tableRowsData: Array<TableRowType>
+}
 
-	const tableRef = React.useRef(null)
+type PropsType = TableMapStatePropsType & TableMapDispatchPropsType & ResultTablePropsType
 
-	const TableHeadCells = props.headCellsNames.map(
+const ResultTable: React.FC<PropsType> = (props) => {
+
+	const tableRef: React.RefObject<HTMLTableElement> = React.useRef(null)
+
+	const TableHeadCells = props.tableHeadCellsNames.map(
 		(cell, index) => <td className="res-table__td res-table__td_head" key={index}>{cell}</td>
 	)
 
@@ -18,15 +29,18 @@ const ResultTable = (props) => {
 	}
 
 	const handleDeleteTable = () => {
-		const element = tableRef.current;
-		const elementHeight = element.offsetHeight
-		element.style.height = elementHeight + 'px'
-		setTimeout(() => {
-			element.classList.add("closing")
-		}, 5)
-		setTimeout(() => {
-			props.deleteTable(props.tableId)
-		}, 250)
+		const element = tableRef.current
+
+		if (element) {
+			const elementHeight = element.offsetHeight
+			element.style.height = elementHeight + 'px'
+			setTimeout(() => {
+				element.classList.add("closing")
+			}, 5)
+			setTimeout(() => {
+				props.deleteTable(props.tableId)
+			}, 250)
+		}
 	}
 
 	const saveFirstTableRef = () => {
@@ -38,7 +52,7 @@ const ResultTable = (props) => {
 	React.useEffect(saveFirstTableRef)
 
 	return (
-		<div className="table-block" id={props.tableId} ref={tableRef}>
+		<div className="table-block" ref={tableRef}>
 			<div className="copy-tables">
 				<Button
 					variant="primary"
@@ -68,13 +82,13 @@ const ResultTable = (props) => {
 				</tr>
 				</thead>
 				<tbody className="res-table__tbody">
-				{props.tableData.map((row) => {
+				{props.tableRowsData.map((row) => {
 					return (
 						<ResultTableRow
 							key={row.id}
 							tableId={props.tableId}
 							rowData={row}
-							tableRow={props.tableRow}
+							tableRowData={props.tableRowData}
 							deleteTableRow={props.deleteTableRow}
 							editTableRow={props.editTableRow}
 							tableRef={tableRef}
