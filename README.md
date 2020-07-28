@@ -12,6 +12,10 @@ Technical requirement:
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Demo page
+
+[https://janis-rasa.github.io/react-test-app/](https://janis-rasa.github.io/react-test-app/)
+
 ## Available Scripts
 
 In the project directory, you can run:
