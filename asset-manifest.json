@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/react-test-app/static/css/main.32205024.chunk.css",
+    "main.js": "/react-test-app/static/js/main.9686dd1c.chunk.js",
+    "main.js.map": "/react-test-app/static/js/main.9686dd1c.chunk.js.map",
+    "runtime-main.js": "/react-test-app/static/js/runtime-main.8ad3d07f.js",
+    "runtime-main.js.map": "/react-test-app/static/js/runtime-main.8ad3d07f.js.map",
+    "static/js/2.06d4cffc.chunk.js": "/react-test-app/static/js/2.06d4cffc.chunk.js",
+    "static/js/2.06d4cffc.chunk.js.map": "/react-test-app/static/js/2.06d4cffc.chunk.js.map",
+    "index.html": "/react-test-app/index.html",
+    "precache-manifest.17332daf7075cb999e06851d9e26d967.js": "/react-test-app/precache-manifest.17332daf7075cb999e06851d9e26d967.js",
+    "service-worker.js": "/react-test-app/service-worker.js",
+    "static/css/main.32205024.chunk.css.map": "/react-test-app/static/css/main.32205024.chunk.css.map",
+    "static/js/2.06d4cffc.chunk.js.LICENSE.txt": "/react-test-app/static/js/2.06d4cffc.chunk.js.LICENSE.txt",
+    "static/media/btn_delete.d8d764de.svg": "/react-test-app/static/media/btn_delete.d8d764de.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8ad3d07f.js",
+    "static/js/2.06d4cffc.chunk.js",
+    "static/css/main.32205024.chunk.css",
+    "static/js/main.9686dd1c.chunk.js"
+  ]
+}
