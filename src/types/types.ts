@@ -42,7 +42,7 @@ export type AddEditFormMapStatePropsType = {
 
 export type AddEditFormMapDispatchPropsType = {
 	editFormData: (formData: TableRowType, tableRowData: TableRowDataType) => void
-	addFormData: (formData: TableRowType) => void
+	addFormData: (formData: Omit<TableRowType, "id">) => void
 }
 
 export type ResultTablesMapStatePropsType = AllTablesMapStatePropsType & TableMapStatePropsType

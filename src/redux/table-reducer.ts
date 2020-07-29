@@ -97,7 +97,7 @@ const tablesData = (state = initialState, action: TableDataActionTypes): Initial
 	switch (action.type) {
 
 		case ADD_FORM_DATA:
-			action.values.id = Date.now()
+			Object.assign(action.values, {id: Date.now()})
 			return {
 				...state,
 				tableData: [
@@ -106,7 +106,7 @@ const tablesData = (state = initialState, action: TableDataActionTypes): Initial
 								...table,
 								rows: [
 									...table.rows,
-									action.values
+									action.values as TableRowType
 								]
 							}
 							: table
@@ -228,9 +228,9 @@ type TableDataActionTypes =
 
 type AddFormDataACType = {
 	type: typeof ADD_FORM_DATA
-	values: TableRowType
+	values: Omit<TableRowType, "id">
 }
-const addFormDataAC = (values: TableRowType): AddFormDataACType => ({
+const addFormDataAC = (values: Omit<TableRowType, "id">): AddFormDataACType => ({
 	type: ADD_FORM_DATA,
 	values: values
 })
@@ -343,7 +343,7 @@ export const scrollSuccess = (scrollResult: boolean): ThunkType => (dispatch) =>
 export const saveFirstTableRef = (tableRef: React.RefObject<HTMLTableElement>): ThunkType => (dispatch) => {
 	dispatch(saveFirstTableRefAC(tableRef))
 }
-export const addFormData = (values: TableRowType): ThunkType => (dispatch) => {
+export const addFormData = (values: Omit<TableRowType, "id">): ThunkType => (dispatch) => {
 	dispatch(addFormDataAC(values))
 	dispatch(clearTableRowAC())
 }
