@@ -5,8 +5,8 @@ Technical requirement:
 - The form of adding records to the table, it is also the form of editing records (add changes to edit), it is one common to all tables.
 - You can add entries only in the first table, the rest of the tables can only be edited.
 - The “copy” button for the table means that its current state is copied, and its copy appears under the current table.
-- Button "delete" - deletes the current table (the first table cannot be deleted).
-- Removing columns - the entire row is deleted, only the table in which we are manipulating
+- Button "Delete table" (red "times sign") - deletes the current table (the first table cannot be deleted).
+- Removing rows - the entire row is deleted, only the table in which we are manipulating.
 - Data editing - the data from the table is loaded into the form, after saving the row in the table is updated.
 - In the fill form, the placeholder should disappear with focus.
 
